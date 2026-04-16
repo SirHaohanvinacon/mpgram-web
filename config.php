@@ -41,4 +41,4 @@ define('UPLOAD_SIZE_LIMIT', 20 * 1024 * 1024);
 define('ENABLE_PEER_DB', true);
 
 // Override $_SERVER["SERVER_NAME"] for links
-//define('SERVER_NAME', "mp.lenguyen.vietnam");
+//define('SERVER_NAME', "https://mpgram-web-ne21.onrender.com");
