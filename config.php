@@ -27,8 +27,8 @@ define('TGS_TMP_DIR', sys_get_temp_dir().'/mp/');
 define('LOTTIE_TO_GIF', true);
 
 // api.php
-define('ENABLE_API', false);
-define('ENABLE_LOGIN_API', false);
+define('ENABLE_API', true);
+define('ENABLE_LOGIN_API', true);
 
 // file.php limit
 define('DOWNLOAD_SIZE_LIMIT', 1024 * 1024 * 1024);
