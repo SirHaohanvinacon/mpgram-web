@@ -14,7 +14,7 @@ define('VOICE_TMP_DIR', sys_get_temp_dir().'/mp/');
 define('FFMPEG_DIR', '');
 
 // login.php
-define('LOGIN_CAPTCHA', true);
+define('LOGIN_CAPTCHA', false);
 define('INSTANCE_PASSWORD', null);
 
 // Use file/ instead of file.php, see rewrite rule in .htaccess
