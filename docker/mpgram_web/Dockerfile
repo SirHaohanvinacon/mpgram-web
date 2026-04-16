@@ -1,33 +1,18 @@
-FROM phpdockerio/php:8.4-fpm
+FROM php:8.4-apache
 
-ARG UID
+# Cài đầy đủ các thư viện từ file gốc của bạn
+RUN apt-get update && apt-get install -y \
+    libzip-dev zip unzip libpng-dev libffi-dev libssl-dev patch curl \
+    libxml2-dev libonig-dev libgmp-dev \
+    && docker-php-ext-install bcmath gd ffi zip gmp mbstring xml iconv
 
-RUN apt-get update \
-    && apt-get install -y gnupg curl \
-    && curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor -o /usr/share/keyrings/php.gpg \
-    && echo "deb [signed-by=/usr/share/keyrings/php.gpg] https://packages.sury.org/php/ bullseye main" > /etc/apt/sources.list.d/php.list \
-    && apt-get update \
-    && apt-get install -y php8.4-gd \
-    && apt-get -y --no-install-recommends install \
-    php8.4-mbstring \
-    php8.4-gd \
-    php8.4-ffi \
-    php8.4-gmp \
-    php8.4-iconv \
-    php8.4-xml \
-  # php8.4-json \ PHP8.3-JSON is not shipped as a separate component anymore
-    php8.4-fileinfo \
-    curl \
-	patch \
-    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+# Lệnh "thần thánh" để Render nhận diện được cổng
+RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
 
-COPY ./php.ini /etc/php/8.4/fpm/conf.d/90-php.ini
-COPY ./php.ini /etc/php/8.4/cli/conf.d/90-php.ini
+WORKDIR /var/www/html
+COPY . .
 
-RUN curl -o /usr/local/etc/browscap.ini http://browscap.org/stream?q=Lite_PHP_BrowsCapINI
+# Kích hoạt chế độ rewrite cho link đẹp
+RUN a2enmod rewrite
 
-RUN usermod -u ${UID} www-data
-
-WORKDIR "/var/www/mpgram"
-
-EXPOSE 9000
+EXPOSE 80
